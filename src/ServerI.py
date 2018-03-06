@@ -55,13 +55,18 @@ class ServerI(mp3App.Function):
         print("\n")
 
     def playMusic(self, current=None):
-        player = vlc.Instance()
-        options = "#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8090/player.mp3}"
-        player.vlm_add_broadcast("media", "music/test.mp3", options, 0, [], True, False)
-        player.vlm_play_media("media")
-        time.sleep(30)
-        player.vlm_stop_media("media")
-        player.vlm_release()
+        instance = vlc.Instance()
+        player = instance.media_player_new()
+
+        options = ':sout=#transcode{vcodec=none,acodec=mp3,ab=128,channels=2,samplerate=44100}:http{mux=mp3,dst=:8080/}'
+        media = instance.media_new('/music/test.mp3', options)
+
+        player.set_media(media)
+
+        player.play()
+        time.sleep(20)
+        player.release()
+        #http://localhost:8080
 
 
 with Ice.initialize(sys.argv) as communicator:
