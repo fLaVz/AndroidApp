@@ -1,12 +1,12 @@
-from flask import Flask
-from flask import request
-import json
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
+
 
 @app.route("/")
 def hello():
     return "Hello World!"
+
 
 @app.route("/", methods=['POST'])
 def process():
@@ -14,13 +14,16 @@ def process():
         an = Analyzer()
         print(request.data)
         an.analyzeAction(request.form["phrase"])
-        return json.dumps({'action': an.action, 'music': an.song})
+        return jsonify(
+            action=an.action,
+            song=an.song
+        )
+
 
 class Analyzer():
 
     action = "default"
     song = "default"
-
 
     def analyzeAction(self, phrase):
         if "joue" in phrase:
