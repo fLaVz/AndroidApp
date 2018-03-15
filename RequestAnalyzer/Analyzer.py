@@ -1,6 +1,6 @@
 from flask import Flask
+from flask import request
 import json
-import request
 
 app = Flask(__name__)
 
@@ -9,10 +9,11 @@ def hello():
     return "Hello World!"
 
 @app.route("/", methods=['POST'])
-def run():
+def process():
     if request.form:
         an = Analyzer()
-        an.analyzeAction(request.form)
+        print(request.data)
+        an.analyzeAction(request.form["phrase"])
         return json.dumps({'action': an.action, 'music': an.song})
 
 class Analyzer():
@@ -37,3 +38,7 @@ class Analyzer():
     def printSong(self):
         print(self.action)
         print(self.song)
+
+#export FLASK_APP=Analyzer.py
+#flask run
+#curl --data "phrase=play Californiamdazd adz a" http://127.0.0.1:5000
