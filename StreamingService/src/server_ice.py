@@ -268,6 +268,18 @@ if 'FunctionPrx' not in _M_mp3App.__dict__:
         def end_playMusic(self, _r):
             return _M_mp3App.Function._op_playMusic.end(self, _r)
 
+        def stopMusic(self, context=None):
+            return _M_mp3App.Function._op_stopMusic.invoke(self, ((), context))
+
+        def stopMusicAsync(self, context=None):
+            return _M_mp3App.Function._op_stopMusic.invokeAsync(self, ((), context))
+
+        def begin_stopMusic(self, _response=None, _ex=None, _sent=None, context=None):
+            return _M_mp3App.Function._op_stopMusic.begin(self, ((), _response, _ex, _sent, context))
+
+        def end_stopMusic(self, _r):
+            return _M_mp3App.Function._op_stopMusic.end(self, _r)
+
         @staticmethod
         def checkedCast(proxy, facetOrContext=None, context=None):
             return _M_mp3App.FunctionPrx.ice_checkedCast(proxy, '::mp3App::Function', facetOrContext, context)
@@ -324,6 +336,9 @@ if 'FunctionPrx' not in _M_mp3App.__dict__:
         def playMusic(self, current=None):
             raise NotImplementedError("servant method 'playMusic' not implemented")
 
+        def stopMusic(self, current=None):
+            raise NotImplementedError("servant method 'stopMusic' not implemented")
+
         def __str__(self):
             return IcePy.stringify(self, _M_mp3App._t_FunctionDisp)
 
@@ -341,6 +356,7 @@ if 'FunctionPrx' not in _M_mp3App.__dict__:
     Function._op_printPlayList = IcePy.Operation('printPlayList', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (), (), None, ())
     Function._op_receivePlaylist = IcePy.Operation('receivePlaylist', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (), (), ((), _M_mp3App._t_playList, False, 0), ())
     Function._op_playMusic = IcePy.Operation('playMusic', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (), (), None, ())
+    Function._op_stopMusic = IcePy.Operation('stopMusic', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (), (), None, ())
 
     _M_mp3App.Function = Function
     del Function

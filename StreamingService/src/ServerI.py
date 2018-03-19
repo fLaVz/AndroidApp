@@ -1,6 +1,5 @@
 import Ice
 import sys
-import time
 
 import mp3App
 from mp3App import vlc
@@ -9,6 +8,8 @@ from mp3App import vlc
 class ServerI(mp3App.Function):
 
     playList = []
+    instance = vlc.Instance()
+    player = instance.media_player_new()
 
     def sendPlayList(self, seq, current=None):
         self.playList = seq
@@ -56,22 +57,28 @@ class ServerI(mp3App.Function):
         print("\n")
 
     def playMusic(self, current=None):
-        instance = vlc.Instance()
-        player = instance.media_player_new()
+        if self.player is None and self.instance is None:
+            self.instance = vlc.Instance()
+            self.player = self.instance.media_player_new()
 
         options = ':sout=#transcode{vcodec=none,acodec=mp3,ab=128,channels=2,samplerate=44100}:http{mux=mp3,dst=:8080/}'
-        media = instance.media_new('/music/test.mp3', options)
+        media = self.instance.media_new('/music/test.mp3', options)
+        print("playing music")
+        self.player.set_media(media)
+        self.player.play()
 
-        player.set_media(media)
-
-        player.play()
-        time.sleep(20)
-        player.release()
-        #http://localhost:8080
+    def stopMusic(self, current=None):
+        if self.player is not None:
+            print("stoping music attempt")
+            self.player.release()
+            self.instance = None
+            self.player = None
+        # time.sleep(90)
+        # http://localhost:8080
 
 
 with Ice.initialize(sys.argv) as communicator:
-    adapter = communicator.createObjectAdapterWithEndpoints("Function", "default -h localhost -p 10000")
+    adapter = communicator.createObjectAdapterWithEndpoints("Function", "tcp -h 127.0.0.1 -p 10000")
     object = ServerI()
     adapter.add(object, communicator.stringToIdentity("server"))
     adapter.activate()
