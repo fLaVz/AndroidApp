@@ -152,7 +152,7 @@ if 'Song' not in _M_mp3App.__dict__:
     del Song
 
 if '_t_playList' not in _M_mp3App.__dict__:
-    _M_mp3App._t_playList = IcePy.defineSequence('::mp3App::playList', (), _M_mp3App._t_Song)
+    _M_mp3App._t_playList = IcePy.defineSequence('::mp3App::playList', (), IcePy._t_string)
 
 _M_mp3App._t_Function = IcePy.defineValue('::mp3App::Function', Ice.Value, -1, (), False, True, None, ())
 
@@ -256,14 +256,14 @@ if 'FunctionPrx' not in _M_mp3App.__dict__:
         def end_receivePlaylist(self, _r):
             return _M_mp3App.Function._op_receivePlaylist.end(self, _r)
 
-        def playMusic(self, context=None):
-            return _M_mp3App.Function._op_playMusic.invoke(self, ((), context))
+        def playMusic(self, music, context=None):
+            return _M_mp3App.Function._op_playMusic.invoke(self, ((music, ), context))
 
-        def playMusicAsync(self, context=None):
-            return _M_mp3App.Function._op_playMusic.invokeAsync(self, ((), context))
+        def playMusicAsync(self, music, context=None):
+            return _M_mp3App.Function._op_playMusic.invokeAsync(self, ((music, ), context))
 
-        def begin_playMusic(self, _response=None, _ex=None, _sent=None, context=None):
-            return _M_mp3App.Function._op_playMusic.begin(self, ((), _response, _ex, _sent, context))
+        def begin_playMusic(self, music, _response=None, _ex=None, _sent=None, context=None):
+            return _M_mp3App.Function._op_playMusic.begin(self, ((music, ), _response, _ex, _sent, context))
 
         def end_playMusic(self, _r):
             return _M_mp3App.Function._op_playMusic.end(self, _r)
@@ -333,7 +333,7 @@ if 'FunctionPrx' not in _M_mp3App.__dict__:
         def receivePlaylist(self, current=None):
             raise NotImplementedError("servant method 'receivePlaylist' not implemented")
 
-        def playMusic(self, current=None):
+        def playMusic(self, music, current=None):
             raise NotImplementedError("servant method 'playMusic' not implemented")
 
         def stopMusic(self, current=None):
@@ -355,7 +355,7 @@ if 'FunctionPrx' not in _M_mp3App.__dict__:
     Function._op_searchByArtist = IcePy.Operation('searchByArtist', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (((), IcePy._t_string, False, 0),), (), None, ())
     Function._op_printPlayList = IcePy.Operation('printPlayList', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (), (), None, ())
     Function._op_receivePlaylist = IcePy.Operation('receivePlaylist', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (), (), ((), _M_mp3App._t_playList, False, 0), ())
-    Function._op_playMusic = IcePy.Operation('playMusic', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (), (), None, ())
+    Function._op_playMusic = IcePy.Operation('playMusic', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (((), IcePy._t_string, False, 0),), (), None, ())
     Function._op_stopMusic = IcePy.Operation('stopMusic', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (), (), None, ())
 
     _M_mp3App.Function = Function
